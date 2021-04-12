@@ -2,8 +2,6 @@ locals {
   ################################################
   ### YOU HAVE TO CHANGE ME
 
-  HETZNER_API_TOKEN = "HETZNER_TOKEN"
-
   parameters = {
     LETSENCRYPT_DOMAIN = "your.domain.biz"
     LETSENCRYPT_EMAIL  = "your_email@web.de"
@@ -16,9 +14,9 @@ locals {
     ENABLE_AUTH   = 1
     ENABLE_GUESTS = 0
 
-    #
+    ######
     # Advanced configuration options (you generally don't need to change these)
-    #
+    ######
     AUTH_TYPE               = "internal"
     CONFIG                  = "/jitsi-meet-cfg"
     LETSENCRYPT_USE_STAGING = "1"
@@ -27,14 +25,18 @@ locals {
     ENABLE_HTTP_REDIRECT    = "1"
     ENABLE_HSTS             = 1
     ENABLE_LETSENCRYPT      = "1"
+    ######
   }
 
   jitsi_release = "stable-5142"
-
   users = [
     "peter",
     "maria"
   ]
+}
+
+variable "HETZNER_TOKEN" {
+  type = string
 }
 
 resource "random_password" "password" {
@@ -56,7 +58,7 @@ terraform {
 }
 
 provider "hcloud" {
-  token = local.HETZNER_API_TOKEN
+  token = var.HETZNER_TOKEN
 }
 
 resource "tls_private_key" "private-key" {
@@ -72,7 +74,7 @@ resource "hcloud_server" "server" {
   name        = "server-test"
   server_type = "cpx21"
   image       = "ubuntu-20.04"
-  location    = "nbg1"
+  location    = "fsn1"
 
   user_data = data.template_file.init.rendered
   ssh_keys = [
@@ -95,10 +97,6 @@ data "template_file" "init" {
 output "private_ssh_key" {
   value     = tls_private_key.private-key.private_key_pem
   sensitive = true
-}
-
-output "rendered" {
-  value = data.template_file.init.rendered
 }
 
 output "ipv4_address" {
