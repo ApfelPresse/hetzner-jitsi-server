@@ -2,10 +2,14 @@ locals {
   ################################################
   ### YOU HAVE TO CHANGE ME
 
+<<<<<<< HEAD
   HETZNER_API_TOKEN = ""
+=======
+  HETZNER_API_TOKEN = "HETZNER_TOKEN"
+>>>>>>> 872462d (remove default values)
 
   parameters = {
-    LETSENCRYPT_DOMAIN = "asdfvvvv.stiefels.biz"
+    LETSENCRYPT_DOMAIN = "your.domain.biz"
     LETSENCRYPT_EMAIL  = "your_email@web.de"
 
     ################################################
