@@ -2,11 +2,7 @@ locals {
   ################################################
   ### YOU HAVE TO CHANGE ME
 
-<<<<<<< HEAD
-  HETZNER_API_TOKEN = ""
-=======
   HETZNER_API_TOKEN = "HETZNER_TOKEN"
->>>>>>> 872462d (remove default values)
 
   parameters = {
     LETSENCRYPT_DOMAIN = "your.domain.biz"
