@@ -21,7 +21,6 @@ image::https://honicon.com/wp-content/uploads/2020/05/unnamed.png[]
          terraform init
 
 5.  Open main.tf and edit
-- HETZNER_API_TOKEN
 - LETSENCRYPT_DOMAIN
 - LETSENCRYPT_EMAIL
 
