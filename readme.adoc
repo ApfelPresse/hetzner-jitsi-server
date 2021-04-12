@@ -25,7 +25,7 @@ image::https://honicon.com/wp-content/uploads/2020/05/unnamed.png[]
 - LETSENCRYPT_EMAIL
 
 6. After deploying the jitsi server you habe to point your domain to your server with an A Record.
-**If you're not familiar with this try to create an A Record first (Step 8)** because you have only 1-2 Minutes after Step 7 to do this.
+**If you're not familiar with this try to create an A Record first (Step 8)** because you have only 1-2 Minutes after Step 7.
 
 7. Deploy the Jitsi Server (do not forget to add your hetzner token)
    
