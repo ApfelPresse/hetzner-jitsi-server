@@ -1,0 +1,50 @@
+# Simple Jitsi Server self-hosted on Hetzner
+image::https://honicon.com/wp-content/uploads/2020/05/unnamed.png[]
+
+## Requirements
+* Domain (e.g. your.domain.com)
+* Account at https://console.hetzner.cloud/[Hetzner]
+
+## Install
+1. https://learn.hashicorp.com/tutorials/terraform/install-cli[Install Terraform]
+2. Create an Hetzner API Token
+   -    **Sign in** into the https://console.hetzner.cloud/[Hetzner Cloud Console] choose a Project, go to **Access** → **Tokens**, and create a new token.
+   - Make sure to copy the token because it won’t be shown to you again. A token is bound to a Project, to interact with the API of another Project you have to create a new token inside the Project.
+    
+3. Clone this repository
+
+         git clone https://github.com/ApfelPresse/hetzner-jitsi-server.git
+         cd hetzner-jitsi-server
+   
+4.  Initialize Terraform
+    
+         terraform init
+
+5.  Open main.tf and edit
+- HETZNER_API_TOKEN
+- LETSENCRYPT_DOMAIN
+- LETSENCRYPT_EMAIL
+
+6. After deploying the jitsi server you habe to point your domain to your server with an A Record.
+**If you're not familiar with this try to create an A Record first (Step 8)** because you have only 1-2 Minutes after Step 7 to do this.
+
+7. Deploy the Jitsi Server
+   
+         terraform apply -auto-approve
+
+   Example Output:
+   ipv4_address = "122.136.122.26"
+
+
+8. Setup an A Record for your domain
+- Each Domain Provider looks different, I can only give you a high level description
+- Go to your Domain Provider and click on your domain
+- click on *Manage DNS*
+- Add a new Record
+- Click on *A Record*
+- Enter the IP (*ipv4_address* from step 7) in the value field
+
+9. Now wait and after a couple of Minutes, happy Jitsiing
+
+
+
