@@ -1,14 +1,7 @@
 locals {
-  ################################################
-  ### YOU HAVE TO CHANGE ME
-
   parameters = {
-    LETSENCRYPT_DOMAIN = "your.domain.biz"
-    LETSENCRYPT_EMAIL  = "your_email@web.de"
-
-    ################################################
-    ################################################
-
+    LETSENCRYPT_DOMAIN = "your.domain.biz"   # CHANGE ME
+    LETSENCRYPT_EMAIL  = "your_email@web.de" # CHANGE ME
 
     # do not forget to change usernames below if auth is enabled
     ENABLE_AUTH   = 1
@@ -33,6 +26,9 @@ locals {
     "peter",
     "maria"
   ]
+
+  prefix = terraform.workspace == "default" ? "" : "${terraform.workspace}-"
+  name   = "jitsi-server"
 }
 
 variable "HETZNER_TOKEN" {
@@ -66,12 +62,12 @@ resource "tls_private_key" "private-key" {
 }
 
 resource "hcloud_ssh_key" "default" {
-  name       = "key"
+  name       = "${local.prefix}${local.name}"
   public_key = tls_private_key.private-key.public_key_openssh
 }
 
 resource "hcloud_server" "server" {
-  name        = "server-test"
+  name        = "${local.prefix}${local.name}"
   server_type = "cpx21"
   image       = "ubuntu-20.04"
   location    = "fsn1"
@@ -99,8 +95,16 @@ output "private_ssh_key" {
   sensitive = true
 }
 
+output "IMPORTANT" {
+  value = "Please add ${hcloud_server.server.ipv4_address} as a A-Record in your Domain!!!!!"
+}
+
 output "ipv4_address" {
   value = hcloud_server.server.ipv4_address
+}
+
+output "domain" {
+  value = "In a couple of minutes the Jitsi Server is ready under https://${local.parameters.LETSENCRYPT_DOMAIN}"
 }
 
 output "users" {

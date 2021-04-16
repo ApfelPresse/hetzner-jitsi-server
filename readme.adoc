@@ -1,26 +1,27 @@
-# Simple Jitsi Server self-hosted on Hetzner
-image::https://honicon.com/wp-content/uploads/2020/05/unnamed.png[]
+= Simple Jitsi Server self-hosted on Hetzner
 
-## Requirements
+image::https://honicon.com/wp-content/uploads/2020/05/unnamed.png[Jitsi, 300]
+
+== Requirements
 * Domain (e.g. your.domain.com)
 * Account at https://console.hetzner.cloud/[Hetzner]
 
-## Install
+== Install
 1. https://learn.hashicorp.com/tutorials/terraform/install-cli[Install Terraform]
 2. Create an Hetzner API Token
-   -    **Sign in** into the https://console.hetzner.cloud/[Hetzner Cloud Console] choose a Project, go to **Access** → **Tokens**, and create a new token.
-   - Make sure to copy the token because it won’t be shown to you again. A token is bound to a Project, to interact with the API of another Project you have to create a new token inside the Project.
-    
+- **Sign in** into the https://console.hetzner.cloud/[Hetzner Cloud Console] choose a Project, go to **Access** → **Tokens**, and create a new token.
+- Make sure to copy the token because it won’t be shown to you again.A token is bound to a Project, to interact with the API of another Project you have to create a new token inside the Project.
+
 3. Clone this repository
 
          git clone https://github.com/ApfelPresse/hetzner-jitsi-server.git
          cd hetzner-jitsi-server
-   
-4.  Initialize Terraform
-    
+
+4. Initialize Terraform
+
          terraform init
 
-5.  Open main.tf and edit
+5. Open main.tf and edit
 - LETSENCRYPT_DOMAIN
 - LETSENCRYPT_EMAIL
 
@@ -28,14 +29,20 @@ image::https://honicon.com/wp-content/uploads/2020/05/unnamed.png[]
 **If you're not familiar with this try to create an A Record first (Step 8)** because you have only 1-2 Minutes after Step 7.
 
 7. Deploy the Jitsi Server (do not forget to add your hetzner token)
-   
+
          terraform apply -auto-approve -var="HETZNER_TOKEN=...."
 
 
    Example Outputs:
-   ipv4_address = "122.136.122.26"
-   private_ssh_key = ....
-   users = .....
+   .
+   domain = "In a couple of minutes the Jitsi Server is ready under https://your.domain.biz"
+   IMPORTANT = "Please add XXX.YYY.ZZZ.KKK as a A-Record in your Domain!!!!!"
+   private_ssh_key = <sensitive>
+   ipv4_address = "XXX.YYY.ZZZ.KKK"
+   users = <<EOT
+   Username: peter Password: pass
+   Username: maria Password: pass
+   EOT
 
 
 8. Setup an A Record for your domain
@@ -48,5 +55,15 @@ image::https://honicon.com/wp-content/uploads/2020/05/unnamed.png[]
 
 9. Now wait and after a couple of Minutes, happy Jitsiing
 
+10. When you are finished, do not forget to destroy everything
 
+         terraform destroy -auto-approve -var="HETZNER_TOKEN=...."
+
+== Debugging
+
+Check the logs with
+
+      ./ssh_connect.sh docker logs docker-jitsi-meet_web_1
+
+      ./ssh_connect.sh tail -n 100 /var/log/cloud-init-output.log
 
